@@ -1,3 +1,4 @@
+"use strict";
 const addform = document.querySelector(".add") as HTMLFormElement;
 const list = document.querySelector(".todos") as HTMLDivElement;
 const search = document.querySelector(".search input") as HTMLInputElement;
@@ -39,3 +40,21 @@ search.addEventListener("keyup", () => {
   const term = search.value.trim();
   filtertodos(term);
 });
+async function getUser() {
+  try {
+    let res = await fetch("/api/user.json");
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function renderUsers() {
+  let user = await getUser();
+  let html = "";
+  const newtext = `todo list of ${user.name}`;
+  html += newtext;
+  const titleh = document.querySelector("h1") as HTMLHeadElement;
+  titleh.innerHTML = html;
+}
+renderUsers();
